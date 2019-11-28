@@ -11,10 +11,10 @@ const (
 	CodeNameDoesNotExist sdk.CodeType = 101
 )
 
-// ErrNameDoesNotExist is the error for name not existing
-func ErrNameDoesNotExist(codespace sdk.CodespaceType) sdk.Error {
-	return sdk.NewError(codespace, CodeNameDoesNotExist, "Name does not exist")
-}
+// // ErrNameDoesNotExist is the error for name not existing
+// func ErrNameDoesNotExist(codespace sdk.CodespaceType) sdk.Error {
+// 	return sdk.NewError(codespace, CodeNameDoesNotExist, "Name does not exist")
+// }
 
 // ErrEventDoesNotExist is the error for event not existing
 func ErrEventDoesNotExist(codespace sdk.CodespaceType) sdk.Error {

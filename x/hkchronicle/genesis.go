@@ -10,7 +10,7 @@ type GenesisState struct {
 	WhoseEventRecords []WhoseEvent `json:"whoseevent_records"`
 }
 
-func NewGenesisState(whoIsRecords []Whois) GenesisState {
+func NewGenesisState(whoseEventRecords []WhoseEvent) GenesisState {
 	return GenesisState{WhoseEventRecords: nil}
 }
 

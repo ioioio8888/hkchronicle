@@ -58,7 +58,7 @@ func main() {
 		client.NewCompletionCmd(rootCmd, true),
 	)
 
-	executor := cli.PrepareMainCmd(rootCmd, "NS", app.DefaultCLIHome)
+	executor := cli.PrepareMainCmd(rootCmd, "HKC", app.DefaultCLIHome)
 	err := executor.Execute()
 	if err != nil {
 		panic(err)
