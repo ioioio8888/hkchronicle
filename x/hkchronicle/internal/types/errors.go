@@ -15,3 +15,8 @@ const (
 func ErrNameDoesNotExist(codespace sdk.CodespaceType) sdk.Error {
 	return sdk.NewError(codespace, CodeNameDoesNotExist, "Name does not exist")
 }
+
+// ErrEventDoesNotExist is the error for event not existing
+func ErrEventDoesNotExist(codespace sdk.CodespaceType) sdk.Error {
+	return sdk.NewError(codespace, CodeNameDoesNotExist, "Event does not exist")
+}

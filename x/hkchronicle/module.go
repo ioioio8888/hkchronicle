@@ -1,4 +1,4 @@
-package nameservice
+package hkchronicle
 
 import (
 	"encoding/json"
@@ -9,8 +9,8 @@ import (
 	"github.com/cosmos/cosmos-sdk/codec"
 	"github.com/cosmos/cosmos-sdk/types/module"
 	"github.com/cosmos/cosmos-sdk/x/bank"
-	"github.com/ioioio8888/nameservice/x/nameservice/client/cli"
-	"github.com/ioioio8888/nameservice/x/nameservice/client/rest"
+	"github.com/ioioio8888/hkchronicle/x/hkchronicle/client/cli"
+	"github.com/ioioio8888/hkchronicle/x/hkchronicle/client/rest"
 
 	"github.com/cosmos/cosmos-sdk/client/context"
 	sdk "github.com/cosmos/cosmos-sdk/types"

@@ -1,4 +1,4 @@
-module github.com/ioioio8888/nameservice
+module github.com/ioioio8888/hkchronicle
 
 go 1.13
 
