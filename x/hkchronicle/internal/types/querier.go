@@ -20,3 +20,14 @@ type QueryResAllEvents []string
 func (n QueryResAllEvents) String() string {
 	return strings.Join(n[:], "\n")
 }
+
+// Query Result Payload for a resolve query
+type QueryTest struct {
+	Value string `json:"value"`
+	// Time  int64	 `json:"time"`
+}
+
+// implement fmt.Stringer
+func (n QueryTest) String() string {
+	return n.Value
+}
