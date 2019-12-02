@@ -20,7 +20,7 @@ func GetQueryCmd(storeKey string, cdc *codec.Codec) *cobra.Command {
 	}
 	hkchronicleQueryCmd.AddCommand(client.GetCommands(
 		GetCmdResolveEvent(storeKey, cdc),
-		GetCmdWhoseEvent(storeKey, cdc),
+		GetCmdEvent(storeKey, cdc),
 		GetCmdAllEvents(storeKey, cdc),
 		GetCmdTest(storeKey, cdc),
 	)...)
@@ -74,23 +74,23 @@ func GetCmdResolveEvent(queryRoute string, cdc *codec.Codec) *cobra.Command {
 	}
 }
 
-// GetCmdWhoseEvents queries information about an event
-func GetCmdWhoseEvent(queryRoute string, cdc *codec.Codec) *cobra.Command {
+// GetCmdEvents queries information about an event
+func GetCmdEvent(queryRoute string, cdc *codec.Codec) *cobra.Command {
 	return &cobra.Command{
-		Use:   "whoseevent [name]",
-		Short: "Query whose event",
+		Use:   "qevent [name]",
+		Short: "Query the data of an event",
 		Args:  cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			cliCtx := context.NewCLIContext().WithCodec(cdc)
 			name := args[0]
 
-			res, _, err := cliCtx.QueryWithData(fmt.Sprintf("custom/%s/whoseevent/%s", queryRoute, name), nil)
+			res, _, err := cliCtx.QueryWithData(fmt.Sprintf("custom/%s/qevent/%s", queryRoute, name), nil)
 			if err != nil {
 				fmt.Printf("could not resolve whose event - %s \n", name)
 				return nil
 			}
 
-			var out types.WhoseEvent
+			var out types.Event
 			cdc.MustUnmarshalJSON(res, &out)
 			return cliCtx.PrintOutput(out)
 		},
