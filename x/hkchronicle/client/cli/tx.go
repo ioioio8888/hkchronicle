@@ -93,15 +93,15 @@ func GetCmdSetEvent(cdc *codec.Codec) *cobra.Command {
 // GetCmdBuyEvent is the CLI command for sending a BuyEvent transaction
 func GetCmdStakeEvent(cdc *codec.Codec) *cobra.Command {
 	return &cobra.Command{
-		Use:   "stake-event [name] [amount]",
+		Use:   "stake-event [name]",
 		Short: "Stake a coin on an event",
-		Args:  cobra.ExactArgs(2),
+		Args:  cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			cliCtx := context.NewCLIContext().WithCodec(cdc)
 
 			txBldr := auth.NewTxBuilderFromCLI().WithTxEncoder(utils.GetTxEncoder(cdc))
 
-			coins, err := sdk.ParseCoins(args[1])
+			coins, err := sdk.ParseCoins("1hkctoken")
 			if err != nil {
 				return err
 			}
