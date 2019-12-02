@@ -12,12 +12,13 @@ var MinEventPrice = sdk.Coins{sdk.NewInt64Coin("hkctoken", 1)}
 
 // WhoseEvent is a struct that contains all the metadata of an event
 type WhoseEvent struct {
-	Value  string           `json:"value"`
-	Time   int64            `json:"time"`
-	Owner  sdk.AccAddress   `json:"owner"`
-	Price  sdk.Coins        `json:"price"`
-	Staker []sdk.AccAddress `json:"staker"`
-	Stake  sdk.Coins        `json:"stake"`
+	Value   string           `json:"value"`
+	Time    int64            `json:"time"`
+	Owner   sdk.AccAddress   `json:"owner"`
+	Price   sdk.Coins        `json:"price"`
+	Staker  []sdk.AccAddress `json:"staker"`
+	Stake   sdk.Coins        `json:"stake"`
+	Content string           `json:"content"`
 }
 
 // NewWhoseEvent returns a new WhoseEvent with the minprice as the price

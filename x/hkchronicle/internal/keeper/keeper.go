@@ -75,6 +75,14 @@ func (k Keeper) GetEventOwner(ctx sdk.Context, event string) sdk.AccAddress {
 	return k.GetWhoseEvent(ctx, event).Owner
 }
 
+// SetEventStaker - sets the current owner of an event
+func (k Keeper) SetEventStaker(ctx sdk.Context, event string, staker sdk.AccAddress, value sdk.Coins) {
+	whoseEvent := k.GetWhoseEvent(ctx, event)
+	whoseEvent.Staker = append(whoseEvent.Staker, staker)
+	whoseEvent.Stake = whoseEvent.Stake.Add(value)
+	k.SetWhoseEvent(ctx, event, whoseEvent)
+}
+
 // SetEventOwner - sets the current owner of an event
 func (k Keeper) SetEventOwner(ctx sdk.Context, event string, owner sdk.AccAddress) {
 	whoseEvent := k.GetWhoseEvent(ctx, event)
