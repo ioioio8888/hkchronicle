@@ -32,8 +32,8 @@ func handleMsgSetEvent(ctx sdk.Context, keeper Keeper, msg MsgSetEvent) sdk.Resu
 	if !msg.Owner.Equals(keeper.GetEventOwner(ctx, msg.Event)) { // Checks if the the msg sender is the same as the current owner
 		return sdk.ErrUnauthorized("Incorrect Owner").Result() // If not, throw an error
 	}
-	keeper.SetEvent(ctx, msg.Event, msg.Value, msg.Time) // If so, set the name to the value specified in the msg.
-	return sdk.Result{}                                  // return
+	keeper.SetThisEvent(ctx, msg.Event, msg.Value, msg.Time) // If so, set the name to the value specified in the msg.
+	return sdk.Result{}                                      // return
 }
 
 // Handle a message to buy event
@@ -76,6 +76,6 @@ func handleMsgDeleteEvent(ctx sdk.Context, keeper Keeper, msg MsgDeleteEvent) sd
 	if !msg.Owner.Equals(keeper.GetEventOwner(ctx, msg.Event)) {
 		return sdk.ErrUnauthorized("Incorrect Owner").Result()
 	}
-	keeper.DeleteWhoseEvent(ctx, msg.Event)
+	keeper.DeleteEvent(ctx, msg.Event)
 	return sdk.Result{}
 }

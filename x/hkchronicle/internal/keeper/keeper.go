@@ -25,81 +25,81 @@ func NewKeeper(coinKeeper bank.Keeper, storeKey sdk.StoreKey, cdc *codec.Codec) 
 	}
 }
 
-// Sets the entire WhoseEvent metadata struct for an event
-func (k Keeper) SetWhoseEvent(ctx sdk.Context, event string, whoseEvent types.WhoseEvent) {
-	if whoseEvent.Owner.Empty() {
+// Sets the entire Event metadata struct for an event
+func (k Keeper) SetEvent(ctx sdk.Context, event string, Event types.Event) {
+	if Event.Owner.Empty() {
 		return
 	}
 	store := ctx.KVStore(k.storeKey)
-	store.Set([]byte(event), k.cdc.MustMarshalBinaryBare(whoseEvent))
+	store.Set([]byte(event), k.cdc.MustMarshalBinaryBare(Event))
 }
 
-// Gets the entire WhoseEvent metadata struct for an event
-func (k Keeper) GetWhoseEvent(ctx sdk.Context, event string) types.WhoseEvent {
+// Gets the entire Event metadata struct for an event
+func (k Keeper) GetEvent(ctx sdk.Context, event string) types.Event {
 	store := ctx.KVStore(k.storeKey)
 	if !k.IsEventPresent(ctx, event) {
-		return types.NewWhoseEvent()
+		return types.NewEvent()
 	}
 	bz := store.Get([]byte(event))
-	var whoseEvent types.WhoseEvent
-	k.cdc.MustUnmarshalBinaryBare(bz, &whoseEvent)
-	return whoseEvent
+	var Event types.Event
+	k.cdc.MustUnmarshalBinaryBare(bz, &Event)
+	return Event
 }
 
 // Deletes the entire WhoseEevnt metadata struct for an event
-func (k Keeper) DeleteWhoseEvent(ctx sdk.Context, event string) {
+func (k Keeper) DeleteEvent(ctx sdk.Context, event string) {
 	store := ctx.KVStore(k.storeKey)
 	store.Delete([]byte(event))
 }
 
 // ResolveEvent - returns the info that the event resolves to
 func (k Keeper) ResolveEvent(ctx sdk.Context, event string) string {
-	return k.GetWhoseEvent(ctx, event).Value
+	return k.GetEvent(ctx, event).Value
 }
 
-// SetEvent - sets the value and time that a event resolves to
-func (k Keeper) SetEvent(ctx sdk.Context, event string, value string, time int64) {
-	whoseEvent := k.GetWhoseEvent(ctx, event)
-	whoseEvent.Value = value
-	whoseEvent.Time = time
-	k.SetWhoseEvent(ctx, event, whoseEvent)
+// SetThisEvent - sets the value and time that a event resolves to
+func (k Keeper) SetThisEvent(ctx sdk.Context, event string, value string, time int64) {
+	Event := k.GetEvent(ctx, event)
+	Event.Value = value
+	Event.Time = time
+	k.SetEvent(ctx, event, Event)
 }
 
 // HasEventOwner - returns whether or not the event already has an owner
 func (k Keeper) HasEventOwner(ctx sdk.Context, event string) bool {
-	return !k.GetWhoseEvent(ctx, event).Owner.Empty()
+	return !k.GetEvent(ctx, event).Owner.Empty()
 }
 
 // GetEventOwner - get the current owner of an event
 func (k Keeper) GetEventOwner(ctx sdk.Context, event string) sdk.AccAddress {
-	return k.GetWhoseEvent(ctx, event).Owner
+	return k.GetEvent(ctx, event).Owner
 }
 
 // SetEventStaker - sets the current owner of an event
 func (k Keeper) SetEventStaker(ctx sdk.Context, event string, staker sdk.AccAddress, value sdk.Coins) {
-	whoseEvent := k.GetWhoseEvent(ctx, event)
-	whoseEvent.Staker = append(whoseEvent.Staker, staker)
-	whoseEvent.Stake = whoseEvent.Stake.Add(value)
-	k.SetWhoseEvent(ctx, event, whoseEvent)
+	Event := k.GetEvent(ctx, event)
+	Event.Stakers = append(Event.Stakers, staker)
+	Event.Stake = Event.Stake.Add(value)
+	k.SetEvent(ctx, event, Event)
 }
 
 // SetEventOwner - sets the current owner of an event
 func (k Keeper) SetEventOwner(ctx sdk.Context, event string, owner sdk.AccAddress) {
-	whoseEvent := k.GetWhoseEvent(ctx, event)
-	whoseEvent.Owner = owner
-	k.SetWhoseEvent(ctx, event, whoseEvent)
+	Event := k.GetEvent(ctx, event)
+	Event.Owner = owner
+	k.SetEvent(ctx, event, Event)
 }
 
 // GetEventPrice - gets the current price of an event
 func (k Keeper) GetEventPrice(ctx sdk.Context, event string) sdk.Coins {
-	return k.GetWhoseEvent(ctx, event).Price
+	return k.GetEvent(ctx, event).Price
 }
 
 // SetEventPrice - sets the current price of an event
 func (k Keeper) SetEventPrice(ctx sdk.Context, event string, price sdk.Coins) {
-	whoseEvent := k.GetWhoseEvent(ctx, event)
-	whoseEvent.Price = price
-	k.SetWhoseEvent(ctx, event, whoseEvent)
+	Event := k.GetEvent(ctx, event)
+	Event.Price = price
+	k.SetEvent(ctx, event, Event)
 }
 
 // Check if the event is present in the store or not

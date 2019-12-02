@@ -13,7 +13,7 @@ import (
 // query endpoints supported by the hkchronicle Querier
 const (
 	QueryEventResolve = "eresolve"
-	QueryWhoseEvent   = "whoseevent"
+	QueryEvent        = "qevent"
 	QueryAllEvents    = "allevents"
 	QueryTest         = "test"
 )
@@ -27,8 +27,8 @@ func NewQuerier(keeper Keeper) sdk.Querier {
 			return queryTest(ctx, path[1:], req, keeper)
 		case QueryEventResolve:
 			return queryEventResolve(ctx, path[1:], req, keeper)
-		case QueryWhoseEvent:
-			return queryWhoseEvent(ctx, path[1:], req, keeper)
+		case QueryEvent:
+			return queryEvent(ctx, path[1:], req, keeper)
 		case QueryAllEvents:
 			return queryAllEvents(ctx, req, keeper)
 		default:
@@ -68,10 +68,10 @@ func queryEventResolve(ctx sdk.Context, path []string, req abci.RequestQuery, ke
 }
 
 // nolint: unparam
-func queryWhoseEvent(ctx sdk.Context, path []string, req abci.RequestQuery, keeper Keeper) ([]byte, sdk.Error) {
-	whoseevent := keeper.GetWhoseEvent(ctx, path[0])
+func queryEvent(ctx sdk.Context, path []string, req abci.RequestQuery, keeper Keeper) ([]byte, sdk.Error) {
+	Event := keeper.GetEvent(ctx, path[0])
 
-	res, err := codec.MarshalJSONIndent(keeper.cdc, whoseevent)
+	res, err := codec.MarshalJSONIndent(keeper.cdc, Event)
 	if err != nil {
 		panic("could not marshal result to JSON")
 	}

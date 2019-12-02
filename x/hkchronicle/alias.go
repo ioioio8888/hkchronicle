@@ -18,7 +18,7 @@ var (
 	NewMsgBuyEvent    = types.NewMsgBuyEvent
 	NewMsgSetEvent    = types.NewMsgSetEvent
 	NewMsgDeleteEvent = types.NewMsgDeleteEvent
-	NewWhoseEvent     = types.NewWhoseEvent
+	NewEvent          = types.NewEvent
 
 	ModuleCdc     = types.ModuleCdc
 	RegisterCodec = types.RegisterCodec
@@ -32,5 +32,5 @@ type (
 	MsgStakeEvent        = types.MsgStakeEvent
 	QueryResEventResolve = types.QueryResEventResolve
 	QueryResAllEvents    = types.QueryResAllEvents
-	WhoseEvent           = types.WhoseEvent
+	Event                = types.Event
 )
