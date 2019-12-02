@@ -26,6 +26,7 @@ func GetTxCmd(storeKey string, cdc *codec.Codec) *cobra.Command {
 	hkchronicleTxCmd.AddCommand(client.PostCommands(
 		GetCmdBuyEvent(cdc),
 		GetCmdSetEvent(cdc),
+		GetCmdStakeEvent(cdc),
 		GetCmdDeleteEvent(cdc),
 	)...)
 
@@ -84,6 +85,33 @@ func GetCmdSetEvent(cdc *codec.Codec) *cobra.Command {
 			}
 
 			// return utils.CompleteAndBroadcastTxCLI(txBldr, cliCtx, msgs)
+			return utils.GenerateOrBroadcastMsgs(cliCtx, txBldr, []sdk.Msg{msg})
+		},
+	}
+}
+
+// GetCmdBuyEvent is the CLI command for sending a BuyEvent transaction
+func GetCmdStakeEvent(cdc *codec.Codec) *cobra.Command {
+	return &cobra.Command{
+		Use:   "stake-event [name] [amount]",
+		Short: "Stake a coin on an event",
+		Args:  cobra.ExactArgs(2),
+		RunE: func(cmd *cobra.Command, args []string) error {
+			cliCtx := context.NewCLIContext().WithCodec(cdc)
+
+			txBldr := auth.NewTxBuilderFromCLI().WithTxEncoder(utils.GetTxEncoder(cdc))
+
+			coins, err := sdk.ParseCoins(args[1])
+			if err != nil {
+				return err
+			}
+
+			msg := types.NewMsgStakeEvent(args[0], coins, cliCtx.GetFromAddress())
+			err = msg.ValidateBasic()
+			if err != nil {
+				return err
+			}
+
 			return utils.GenerateOrBroadcastMsgs(cliCtx, txBldr, []sdk.Msg{msg})
 		},
 	}

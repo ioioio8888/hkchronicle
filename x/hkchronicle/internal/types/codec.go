@@ -16,4 +16,5 @@ func RegisterCodec(cdc *codec.Codec) {
 	cdc.RegisterConcrete(MsgSetEvent{}, "hkchronicle/SetEvent", nil)
 	cdc.RegisterConcrete(MsgBuyEvent{}, "hkchronicle/BuyEvent", nil)
 	cdc.RegisterConcrete(MsgDeleteEvent{}, "hkchronicle/DeleteEvent", nil)
+	cdc.RegisterConcrete(MsgStakeEvent{}, "hkchronicle/StakeEvent", nil)
 }

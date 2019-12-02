@@ -12,9 +12,6 @@ import (
 
 // query endpoints supported by the hkchronicle Querier
 const (
-	QueryResolve      = "resolve"
-	QueryWhois        = "whois"
-	QueryNames        = "names"
 	QueryEventResolve = "eresolve"
 	QueryWhoseEvent   = "whoseevent"
 	QueryAllEvents    = "allevents"
