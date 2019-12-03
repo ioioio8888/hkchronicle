@@ -27,6 +27,7 @@ func GetTxCmd(storeKey string, cdc *codec.Codec) *cobra.Command {
 		GetCmdBuyEvent(cdc),
 		GetCmdSetEvent(cdc),
 		GetCmdStakeEvent(cdc),
+		GetCmdUnStakeEvent(cdc),
 		GetCmdDeleteEvent(cdc),
 	)...)
 
@@ -90,11 +91,11 @@ func GetCmdSetEvent(cdc *codec.Codec) *cobra.Command {
 	}
 }
 
-// GetCmdBuyEvent is the CLI command for sending a BuyEvent transaction
+// GetCmdStakeEvent is the CLI command for sending a stake Event transaction
 func GetCmdStakeEvent(cdc *codec.Codec) *cobra.Command {
 	return &cobra.Command{
 		Use:   "stake-event [name]",
-		Short: "Stake a coin on an event",
+		Short: "Stake 1 coin on an event",
 		Args:  cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			cliCtx := context.NewCLIContext().WithCodec(cdc)
@@ -107,6 +108,33 @@ func GetCmdStakeEvent(cdc *codec.Codec) *cobra.Command {
 			}
 
 			msg := types.NewMsgStakeEvent(args[0], coins, cliCtx.GetFromAddress())
+			err = msg.ValidateBasic()
+			if err != nil {
+				return err
+			}
+
+			return utils.GenerateOrBroadcastMsgs(cliCtx, txBldr, []sdk.Msg{msg})
+		},
+	}
+}
+
+// GetCmdUnStakeEvent is the CLI command for sending a unstake Event transaction
+func GetCmdUnStakeEvent(cdc *codec.Codec) *cobra.Command {
+	return &cobra.Command{
+		Use:   "unstake-event [name]",
+		Short: "Unstake(getting back) a coin from an event",
+		Args:  cobra.ExactArgs(1),
+		RunE: func(cmd *cobra.Command, args []string) error {
+			cliCtx := context.NewCLIContext().WithCodec(cdc)
+
+			txBldr := auth.NewTxBuilderFromCLI().WithTxEncoder(utils.GetTxEncoder(cdc))
+
+			coins, err := sdk.ParseCoins("1hkctoken")
+			if err != nil {
+				return err
+			}
+
+			msg := types.NewMsgUnStakeEvent(args[0], coins, cliCtx.GetFromAddress())
 			err = msg.ValidateBasic()
 			if err != nil {
 				return err

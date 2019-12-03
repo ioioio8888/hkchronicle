@@ -30,6 +30,7 @@ type (
 	MsgBuyEvent          = types.MsgBuyEvent
 	MsgDeleteEvent       = types.MsgDeleteEvent
 	MsgStakeEvent        = types.MsgStakeEvent
+	MsgUnStakeEvent      = types.MsgUnStakeEvent
 	QueryResEventResolve = types.QueryResEventResolve
 	QueryResAllEvents    = types.QueryResAllEvents
 	Event                = types.Event

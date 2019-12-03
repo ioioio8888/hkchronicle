@@ -20,6 +20,8 @@ func NewHandler(keeper Keeper) sdk.Handler {
 			return handleMsgDeleteEvent(ctx, keeper, msg)
 		case MsgStakeEvent:
 			return handleMsgStakeEvent(ctx, keeper, msg)
+		case MsgUnStakeEvent:
+			return handleMsgUnStakeEvent(ctx, keeper, msg)
 		default:
 			errMsg := fmt.Sprintf("Unrecognized hkchronicle Msg type: %v", msg.Type())
 			return sdk.ErrUnknownRequest(errMsg).Result()
@@ -64,7 +66,17 @@ func handleMsgStakeEvent(ctx sdk.Context, keeper Keeper, msg MsgStakeEvent) sdk.
 		return sdk.ErrInsufficientCoins("Staker does not have enough coins").Result()
 
 	}
-	keeper.SetEventStaker(ctx, msg.Event, msg.Staker, msg.Bid)
+	keeper.SetEventStaker(ctx, msg.Event, msg.Staker, msg.Bid, "stake")
+	return sdk.Result{}
+}
+
+// Handle a message to unstake an event
+func handleMsgUnStakeEvent(ctx sdk.Context, keeper Keeper, msg MsgUnStakeEvent) sdk.Result {
+	_, err := keeper.CoinKeeper.AddCoins(ctx, msg.Staker, msg.Bid) // If so, deduct the Bid amount from the sender
+	if err != nil {
+		return err.Result()
+	}
+	keeper.SetEventStaker(ctx, msg.Event, msg.Staker, msg.Bid, "unstake")
 	return sdk.Result{}
 }
 

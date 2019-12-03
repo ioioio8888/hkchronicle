@@ -183,3 +183,49 @@ func (msg MsgStakeEvent) GetSignBytes() []byte {
 func (msg MsgStakeEvent) GetSigners() []sdk.AccAddress {
 	return []sdk.AccAddress{msg.Staker}
 }
+
+// MsgBuyEvent defines the BuyEvent message
+type MsgUnStakeEvent struct {
+	Event  string         `json:"event"`
+	Bid    sdk.Coins      `json:"bid"`
+	Staker sdk.AccAddress `json:"staker"`
+}
+
+// NewMsgBuyEvent is the constructor function for MsgBuyEvent
+func NewMsgUnStakeEvent(event string, bid sdk.Coins, staker sdk.AccAddress) MsgUnStakeEvent {
+	return MsgUnStakeEvent{
+		Event:  event,
+		Bid:    bid,
+		Staker: staker,
+	}
+}
+
+// Route should return the name of the module
+func (msg MsgUnStakeEvent) Route() string { return RouterKey }
+
+// Type should return the action
+func (msg MsgUnStakeEvent) Type() string { return "unstake_event" }
+
+// ValidateBasic runs stateless checks on the message
+func (msg MsgUnStakeEvent) ValidateBasic() sdk.Error {
+	if msg.Staker.Empty() {
+		return sdk.ErrInvalidAddress(msg.Staker.String())
+	}
+	if len(msg.Event) == 0 {
+		return sdk.ErrUnknownRequest("Name cannot be empty")
+	}
+	if !msg.Bid.IsAllPositive() {
+		return sdk.ErrInsufficientCoins("Bids must be positive")
+	}
+	return nil
+}
+
+// GetSignBytes encodes the message for signing
+func (msg MsgUnStakeEvent) GetSignBytes() []byte {
+	return sdk.MustSortJSON(ModuleCdc.MustMarshalJSON(msg))
+}
+
+// GetSigners defines whose signature is required
+func (msg MsgUnStakeEvent) GetSigners() []sdk.AccAddress {
+	return []sdk.AccAddress{msg.Staker}
+}

@@ -75,11 +75,30 @@ func (k Keeper) GetEventOwner(ctx sdk.Context, event string) sdk.AccAddress {
 	return k.GetEvent(ctx, event).Owner
 }
 
+func indexOf(element sdk.AccAddress, data []sdk.AccAddress) int {
+	for k, v := range data {
+		if element.Equals(v) {
+			return k
+		}
+	}
+	return -1 //not found.
+}
+
+func RemoveIndex(s []sdk.AccAddress, staker sdk.AccAddress) []sdk.AccAddress {
+	index := indexOf(staker, s)
+	return append(s[:index], s[index+1:]...)
+}
+
 // SetEventStaker - sets the current owner of an event
-func (k Keeper) SetEventStaker(ctx sdk.Context, event string, staker sdk.AccAddress, value sdk.Coins) {
+func (k Keeper) SetEventStaker(ctx sdk.Context, event string, staker sdk.AccAddress, value sdk.Coins, stakeType string) {
 	Event := k.GetEvent(ctx, event)
-	Event.Stakers = append(Event.Stakers, staker)
-	Event.Stake = Event.Stake.Add(value)
+	if stakeType == "stake" {
+		Event.Stakers = append(Event.Stakers, staker)
+		Event.Stake = Event.Stake.Add(value)
+	} else if stakeType == "unstake" {
+		Event.Stakers = RemoveIndex(Event.Stakers, staker)
+		Event.Stake = Event.Stake.Sub(value)
+	}
 	k.SetEvent(ctx, event, Event)
 }
 
