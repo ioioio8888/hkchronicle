@@ -95,6 +95,7 @@ func (k Keeper) SetEventStaker(ctx sdk.Context, event string, staker sdk.AccAddr
 	if stakeType == "stake" {
 		Event.Stakers = append(Event.Stakers, staker)
 		Event.Stake = Event.Stake.Add(value)
+
 	} else if stakeType == "unstake" {
 		Event.Stakers = RemoveIndex(Event.Stakers, staker)
 		Event.Stake = Event.Stake.Sub(value)

@@ -59,8 +59,22 @@ func handleMsgBuyEvent(ctx sdk.Context, keeper Keeper, msg MsgBuyEvent) sdk.Resu
 	return sdk.Result{}
 }
 
+func isStaked(slice []sdk.AccAddress, val sdk.AccAddress) bool {
+	for _, item := range slice {
+		if item.Equals(val) {
+			return true
+		}
+	}
+	return false
+}
+
 // Handle a message to stake event
 func handleMsgStakeEvent(ctx sdk.Context, keeper Keeper, msg MsgStakeEvent) sdk.Result {
+	Event := keeper.GetEvent(ctx, msg.Event)
+	if isStaked(Event.Stakers, msg.Staker) {
+		return sdk.ErrInvalidAddress("Staker already staked on this event").Result()
+	}
+
 	_, err := keeper.CoinKeeper.SubtractCoins(ctx, msg.Staker, msg.Bid) // If so, deduct the Bid amount from the sender
 	if err != nil {
 		return sdk.ErrInsufficientCoins("Staker does not have enough coins").Result()
@@ -72,6 +86,11 @@ func handleMsgStakeEvent(ctx sdk.Context, keeper Keeper, msg MsgStakeEvent) sdk.
 
 // Handle a message to unstake an event
 func handleMsgUnStakeEvent(ctx sdk.Context, keeper Keeper, msg MsgUnStakeEvent) sdk.Result {
+	Event := keeper.GetEvent(ctx, msg.Event)
+	if !isStaked(Event.Stakers, msg.Staker) {
+		return sdk.ErrInvalidAddress("Staker did not staked on this event").Result()
+	}
+
 	_, err := keeper.CoinKeeper.AddCoins(ctx, msg.Staker, msg.Bid) // If so, deduct the Bid amount from the sender
 	if err != nil {
 		return err.Result()
