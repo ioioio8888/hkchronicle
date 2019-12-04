@@ -26,7 +26,7 @@ func resolveEventHandler(cliCtx context.CLIContext, storeName string) http.Handl
 	}
 }
 
-func EventHandler(cliCtx context.CLIContext, storeName string) http.HandlerFunc {
+func listEventHandler(cliCtx context.CLIContext, storeName string) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		vars := mux.Vars(r)
 		paramType := vars[restName]
