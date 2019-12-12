@@ -23,6 +23,6 @@ func RegisterRoutes(cliCtx context.CLIContext, r *mux.Router, storeName string) 
 	r.HandleFunc(fmt.Sprintf("/%s/hkc/unstake", storeName), unStakeEventHandler(cliCtx)).Methods("PUT")
 
 	r.HandleFunc(fmt.Sprintf("/%s/hkc/{%s}", storeName, restName), resolveEventHandler(cliCtx, storeName)).Methods("GET")
-	r.HandleFunc(fmt.Sprintf("/%s/hkc/{%s}/Event", storeName, restName), listEventHandler(cliCtx, storeName)).Methods("GET")
+	r.HandleFunc(fmt.Sprintf("/%s/hkc/{%s}/eventDetails", storeName, restName), eventDetailsHandler(cliCtx, storeName)).Methods("GET")
 	r.HandleFunc(fmt.Sprintf("/%s/hkc", storeName), deleteEventHandler(cliCtx)).Methods("DELETE")
 }

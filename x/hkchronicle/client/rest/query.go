@@ -26,12 +26,12 @@ func resolveEventHandler(cliCtx context.CLIContext, storeName string) http.Handl
 	}
 }
 
-func listEventHandler(cliCtx context.CLIContext, storeName string) http.HandlerFunc {
+func eventDetailsHandler(cliCtx context.CLIContext, storeName string) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		vars := mux.Vars(r)
 		paramType := vars[restName]
 
-		res, _, err := cliCtx.QueryWithData(fmt.Sprintf("custom/%s/Event/%s", storeName, paramType), nil)
+		res, _, err := cliCtx.QueryWithData(fmt.Sprintf("custom/%s/qevent/%s", storeName, paramType), nil)
 		if err != nil {
 			rest.WriteErrorResponse(w, http.StatusNotFound, err.Error())
 			return
